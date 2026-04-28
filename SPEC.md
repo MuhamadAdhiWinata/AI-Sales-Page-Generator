@@ -26,7 +26,7 @@ Sistem dibangun dengan arsitektur **Decoupled Fullstack**:
 | **Backend** | **Laravel 11** | API Robust untuk mengelola logika bisnis dan *Auth*. |
 | **Authentication** | **Laravel Sanctum** | Autentikasi berbasis token untuk mengamankan API. |
 | **AI Engine** | **Gemini 1.5 Flash** | Menghasilkan konten marketing dan struktur HTML. |
-| **Database** | **MySQL** | Menyimpan data user dan riwayat generasi. |
+| **Database** | **MariaDB** | Menyimpan data user dan riwayat generasi. |
 | **CSS Framework** | **Tailwind CSS** | Styling responsif untuk UI aplikasi dan *output* AI. |
 | **State Management** | **Pinia (Optional)** | Mengelola state user dan data hasil generate di Nuxt. |
 
@@ -78,7 +78,7 @@ Formulir input di Nuxt 3 dirancang secara terstruktur untuk memberikan konteks m
 
 ---
 
-## 6. Development Milestone (48 Hours Sprint)
+## 6. Development Milestone
 
 1.  **Phase 1 (Backend - Day 1):**
     * Setup Laravel & Sanctum.
@@ -96,8 +96,14 @@ Formulir input di Nuxt 3 dirancang secara terstruktur untuk memberikan konteks m
 ---
 
 ## 7. Submission Deliverables
-1.  **Live URL:** Aplikasi yang dapat diakses publik.
+<!-- 1.  **Live URL:** Aplikasi yang dapat diakses publik. -->
 2.  **GitHub Repo:** Kode sumber yang bersih dan terdokumentasi.
-3.  **YouTube Video:** Penjelasan teknis mengenai alur integrasi Laravel ke Nuxt dan cara kerja AI Prompting.
+<!-- 3.  **YouTube Video:** Penjelasan teknis mengenai alur integrasi Laravel ke Nuxt dan cara kerja AI Prompting. -->
 
 ---
+
+## 8. Notes
+1.  **Saya sudah menyiapkan database MariaDB di container lain**
+2.  **pastinya kita menggunakan .env dan menyediakan .env.example**
+3.  **laravel,nuxt akan didockerisasi**
+
