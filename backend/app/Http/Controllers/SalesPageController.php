@@ -86,4 +86,27 @@ class SalesPageController extends Controller
 
         return response()->json(['message' => 'Deleted successfully']);
     }
+
+    public function refine(Request $request, SalesPage $salesPage)
+    {
+        if ($salesPage->user_id !== $request->user()->id) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $request->validate([
+            'instruction' => 'required|string|max:1000',
+        ]);
+
+        $salesPage->update([
+            'status' => 'processing',
+            'error_message' => null,
+        ]);
+
+        \App\Jobs\RefineSalesPageJob::dispatch($salesPage, $request->instruction);
+
+        return response()->json([
+            'message' => 'Refinement started',
+            'sales_page' => $salesPage
+        ]);
+    }
 }
