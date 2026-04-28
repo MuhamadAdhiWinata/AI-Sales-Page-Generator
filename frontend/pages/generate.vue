@@ -11,12 +11,13 @@
             <h1 class="text-3xl font-bold">Generator</h1>
           </div>
           <button @click="fillSampleData" type="button" class="text-xs px-3 py-1.5 rounded-lg border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 transition-all">
-            Fill Sample Data
+            Isi Data Sampel
           </button>
         </div>
 
         <div class="p-8 rounded-2xl border border-slate-800 bg-slate-900/50">
           <form @submit.prevent="generateSalesPage" class="space-y-6">
+            <!-- Product Info -->
             <div class="grid md:grid-cols-2 gap-6">
               <div>
                 <label class="block text-sm font-medium text-slate-400 mb-2">Product Name</label>
@@ -24,17 +25,18 @@
               </div>
               <div>
                 <label class="block text-sm font-medium text-slate-400 mb-2">Price / Offer</label>
-                <input v-model="form.price" type="text" required class="form-input" placeholder="e.g. Rp 199rb" />
+                <input v-model="form.price" type="text" required class="form-input" placeholder="e.g. $199 (Limited Offer)" />
               </div>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-slate-400 mb-2">Description</label>
+              <label class="block text-sm font-medium text-slate-400 mb-2">Product Description</label>
               <textarea v-model="form.product_description" required rows="3" class="form-input" placeholder="What is your product about?"></textarea>
             </div>
 
+            <!-- Features -->
             <div>
-              <label class="block text-sm font-medium text-slate-400 mb-2">Features</label>
+              <label class="block text-sm font-medium text-slate-400 mb-2">Key Features</label>
               <div v-for="(feature, index) in form.features" :key="index" class="flex gap-2 mb-2">
                 <input v-model="form.features[index]" type="text" class="form-input" :placeholder="'Feature ' + (index + 1)" />
                 <button type="button" @click="removeFeature(index)" class="p-2 text-rose-400 hover:bg-rose-500/10 rounded-lg">
@@ -46,13 +48,34 @@
               </button>
             </div>
 
+            <!-- Demographics & USP -->
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-slate-400 mb-2">Target Audience</label>
+                <input v-model="form.target_audience" type="text" required class="form-input" placeholder="e.g. Fitness Enthusiasts" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-400 mb-2">Tone Selection</label>
+                <select v-model="form.tone" class="form-input">
+                  <option value="Persuasif">Persuasif</option>
+                  <option value="Formal">Formal</option>
+                  <option value="Urgen">Urgen (Urgency)</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-400 mb-2">Unique Selling Point (USP)</label>
+              <input v-model="form.usp" type="text" required class="form-input" placeholder="What makes you different?" />
+            </div>
+
             <button 
-              :disabled="generating || refining"
+              :disabled="generating"
               type="submit" 
               class="w-full py-4 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-500 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
             >
               <template v-if="generating">
-                <div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 Generating...
               </template>
               <template v-else>
@@ -64,63 +87,42 @@
       </div>
 
       <!-- Preview Section -->
-      <div class="space-y-6">
-        <div class="flex items-center justify-between h-10">
+      <div class="space-y-8">
+        <div class="flex items-center justify-between h-10 mb-8">
           <h2 class="text-xl font-bold">Live Preview</h2>
           <div v-if="generatedPage && generatedPage.status === 'completed'" class="flex gap-2">
-             <button @click="showRefinePanel = !showRefinePanel" class="text-xs px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-all">
-               ✨ Edit with AI
-             </button>
-             <button @click="downloadHtml" class="text-xs px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all">
+             <button @click="downloadHtml" class="text-xs px-3 py-1.5 rounded-lg border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 transition-all flex items-center gap-1">
+               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                Download
              </button>
+             <NuxtLink :to="`/s/${generatedPage.slug}`" target="_blank" class="text-xs px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 transition-colors flex items-center gap-1">
+               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+               Full Page
+             </NuxtLink>
+             <button @click="copyCode" class="text-xs px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 transition-colors">Copy</button>
           </div>
         </div>
 
-        <div class="preview-container relative min-h-[600px] max-h-[800px] rounded-3xl border border-slate-800 bg-slate-950 overflow-hidden shadow-2xl flex flex-col">
+        <div class="preview-container relative min-h-[600px] max-h-[800px] rounded-2xl border border-slate-800 bg-slate-950 overflow-hidden flex flex-col">
           <div v-if="!generatedPage && !generating" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 p-8 text-center">
             <svg class="w-16 h-16 mb-4 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-            <p>Generate a sales page to see the preview here.</p>
+            <p>Fill out the form and click generate to see your sales page here.</p>
           </div>
 
-          <!-- Loading States -->
-          <div v-if="generating || refining" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-slate-900/95 backdrop-blur-md">
-            <div class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-            <p class="text-white font-bold text-lg animate-pulse">{{ refining ? 'AI Refinement in progress...' : 'AI is writing your content...' }}</p>
+          <div v-if="generating" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-slate-900/95 backdrop-blur-md">
+            <div class="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mb-4"></div>
+            <p class="text-white font-medium animate-pulse text-lg">AI sedang menulis konten...</p>
+            <p class="text-slate-400 text-sm mt-2">Ini mungkin memakan waktu 30-60 detik</p>
           </div>
 
-          <!-- Content Frame -->
-          <div v-if="generatedPage && (generatedPage.status === 'completed' || refining)" class="flex-1">
-            <iframe :srcdoc="generatedPage.content_html" class="w-full h-full border-none bg-white" :class="{ 'opacity-30 blur-sm': refining }"></iframe>
+          <!-- The actual generated content -->
+          <div v-if="generatedPage && generatedPage.status === 'completed'" class="flex-1">
+            <iframe :srcdoc="generatedPage.content_html" class="w-full h-[600px] border-none bg-white"></iframe>
           </div>
-
-          <!-- Floating Refine Panel -->
-          <Transition
-            enter-active-class="transition duration-300 ease-out"
-            enter-from-class="transform translate-y-4 opacity-0"
-            enter-to-class="transform translate-y-0 opacity-100"
-          >
-            <div v-if="showRefinePanel && generatedPage && !refining" class="absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] z-[60]">
-              <div class="bg-slate-900/95 backdrop-blur-xl border border-indigo-500/30 p-4 rounded-2xl shadow-2xl flex gap-3 items-end">
-                <div class="flex-1">
-                  <p class="text-[10px] uppercase tracking-wider text-indigo-400 font-bold mb-2">Edit this result with AI</p>
-                  <textarea 
-                    v-model="refineInstruction"
-                    placeholder="e.g. Change color to dark mode, or add more features..."
-                    class="w-full h-20 px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm outline-none focus:ring-1 focus:ring-indigo-500 resize-none"
-                    @keyup.ctrl.enter="startRefinement"
-                  ></textarea>
-                </div>
-                <button 
-                  @click="startRefinement"
-                  :disabled="!refineInstruction"
-                  class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-xl text-sm hover:bg-indigo-700 disabled:opacity-50 h-10 mb-0.5"
-                >
-                  Refine
-                </button>
-              </div>
-            </div>
-          </Transition>
+          <div v-else-if="generatedPage && generatedPage.status === 'processing'" class="flex-1 flex flex-col items-center justify-center bg-slate-950 text-slate-400">
+            <div class="w-10 h-10 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin mb-4"></div>
+            <p>Wait a moment, AI is processing...</p>
+          </div>
         </div>
       </div>
     </div>
@@ -131,10 +133,7 @@
 const { token } = useAuth()
 const config = useRuntimeConfig()
 const generating = ref(false)
-const refining = ref(false)
-const showRefinePanel = ref(false)
 const generatedPage = ref(null)
-const refineInstruction = ref('')
 
 const form = reactive({
   product_name: '',
@@ -151,80 +150,95 @@ const removeFeature = (index) => form.features.splice(index, 1)
 
 const fillSampleData = () => {
   form.product_name = 'Kopi Wonogiri Premium'
-  form.price = 'Rp 75.000'
-  form.product_description = 'Biji kopi pilihan yang diproses secara organik dari lereng pegunungan Wonogiri.'
-  form.features = ['High Caffeine', 'Organic Certified']
+  form.price = 'Rp 75.000 (Promo Beli 1 Gratis 1)'
+  form.product_description = 'Biji kopi pilihan yang diproses secara organik dari lereng pegunungan Wonogiri, menghasilkan cita rasa yang kuat namun lembut di lambung.'
+  form.features = ['High Caffeine', 'Organic Certified', 'Eco-friendly Packaging']
+  form.target_audience = 'Pekerja kantoran usia 25-40 yang sibuk dan pecinta kopi'
+  form.tone = 'Persuasif'
+  form.usp = 'Satu-satunya kopi dengan aroma melati alami dari pegunungan tanpa perasa buatan'
 }
 
-const pollStatus = async (id, isRefining = false) => {
+const pollStatus = async (id) => {
   try {
     const data = await $fetch(`${config.public.apiUrl}/sales-pages/${id}/status`, {
-      headers: { Authorization: `Bearer ${token.value}` }
+      headers: {
+        Authorization: `Bearer ${token.value}`
+      }
     })
     
     if (data.status === 'completed') {
       generatedPage.value = data
       generating.value = false
-      refining.value = false
-      if (isRefining) {
-        refineInstruction.value = ''
-        showRefinePanel.value = false
-      }
     } else if (data.status === 'failed') {
-      alert('Failed: ' + data.error_message)
+      alert('Generation failed: ' + data.error_message)
       generating.value = false
-      refining.value = false
     } else {
-      setTimeout(() => pollStatus(id, isRefining), 3000)
+      // Still processing, poll again in 2 seconds
+      setTimeout(() => pollStatus(id), 2000)
     }
   } catch (e) {
     console.error('Polling failed', e)
     generating.value = false
-    refining.value = false
   }
 }
 
 const generateSalesPage = async () => {
+  if (!token.value) return navigateTo('/login')
+  
   generating.value = true
   generatedPage.value = null
+  
   try {
     const data = await $fetch(`${config.public.apiUrl}/sales-pages`, {
       method: 'POST',
-      headers: { Authorization: `Bearer ${token.value}` },
+      headers: {
+        Authorization: `Bearer ${token.value}`
+      },
       body: form
     })
+    
+    // Start polling
     pollStatus(data.id)
   } catch (e) {
-    alert('Failed to start generation.')
+    alert(e.data?.error || 'Failed to start generation.')
     generating.value = false
   }
 }
 
-const startRefinement = async () => {
-  if (!refineInstruction.value || !generatedPage.value) return
-  refining.value = true
-  try {
-    await $fetch(`${config.public.apiUrl}/sales-pages/${generatedPage.value.id}/refine`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token.value}` },
-      body: { instruction: refineInstruction.value }
-    })
-    pollStatus(generatedPage.value.id, true)
-  } catch (e) {
-    console.error('Refinement failed', e)
-    alert('Failed to start refinement.')
-    refining.value = false
+const copyCode = () => {
+  if (generatedPage.value) {
+    navigator.clipboard.writeText(generatedPage.value.content_html)
+    alert('HTML code copied to clipboard!')
   }
 }
 
 const downloadHtml = () => {
   if (generatedPage.value) {
-    const blob = new Blob([generatedPage.value.content_html], { type: 'text/html' })
+    const fullHtml = `<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${generatedPage.value.product_name}</title>
+    <script src="https://cdn.tailwindcss.com"></` + `script>
+    <style>
+        body { opacity: 0; transition: opacity 0.6s ease-in; }
+    </style>
+</head>
+<body class="bg-slate-950" onload="document.body.style.opacity='1'">
+    ${generatedPage.value.content_html}
+</body>
+</html>`;
+
+    const blob = new Blob([fullHtml], { type: 'text/html' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `sales-page-${generatedPage.value.product_name.toLowerCase()}.html`
+    a.download = `sales-page-${generatedPage.value.product_name.replace(/\s+/g, '-').toLowerCase()}.html`
+    document.body.appendChild(a)
     a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
   }
 }
 
@@ -239,5 +253,9 @@ definePageMeta({
 <style scoped>
 .form-input {
   @apply w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all text-slate-200 placeholder:text-slate-600;
+}
+
+.preview-container {
+  /* Nuxt v-html content needs specific styling if needed, but Tailwind should work globally */
 }
 </style>
