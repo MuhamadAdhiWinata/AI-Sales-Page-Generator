@@ -3,11 +3,16 @@
     <div class="grid lg:grid-cols-2 gap-12">
       <!-- Input Form Section -->
       <div class="space-y-8">
-        <div class="flex items-center gap-4 mb-8">
-          <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+        <div class="flex items-center justify-between mb-8">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+            </div>
+            <h1 class="text-3xl font-bold">Generator</h1>
           </div>
-          <h1 class="text-3xl font-bold">Generator</h1>
+          <button @click="fillSampleData" type="button" class="text-xs px-3 py-1.5 rounded-lg border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 transition-all">
+            Isi Data Sampel
+          </button>
         </div>
 
         <div class="p-8 rounded-2xl border border-slate-800 bg-slate-900/50">
@@ -85,24 +90,39 @@
       <div class="space-y-8">
         <div class="flex items-center justify-between h-10 mb-8">
           <h2 class="text-xl font-bold">Live Preview</h2>
-          <div v-if="generatedPage" class="flex gap-2">
-             <button @click="copyCode" class="text-xs px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 transition-colors">Copy Code</button>
+          <div v-if="generatedPage && generatedPage.status === 'completed'" class="flex gap-2">
+             <button @click="downloadHtml" class="text-xs px-3 py-1.5 rounded-lg border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 transition-all flex items-center gap-1">
+               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+               Download
+             </button>
+             <NuxtLink :to="`/s/${generatedPage.slug}`" target="_blank" class="text-xs px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 transition-colors flex items-center gap-1">
+               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+               Full Page
+             </NuxtLink>
+             <button @click="copyCode" class="text-xs px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 transition-colors">Copy</button>
           </div>
         </div>
 
-        <div class="preview-container relative min-h-[600px] rounded-2xl border border-slate-800 bg-white overflow-hidden">
+        <div class="preview-container relative min-h-[600px] max-h-[800px] rounded-2xl border border-slate-800 bg-slate-950 overflow-hidden flex flex-col">
           <div v-if="!generatedPage && !generating" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 p-8 text-center">
             <svg class="w-16 h-16 mb-4 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
             <p>Fill out the form and click generate to see your sales page here.</p>
           </div>
 
-          <div v-if="generating" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-50">
+          <div v-if="generating" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-slate-900/95 backdrop-blur-md">
             <div class="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mb-4"></div>
-            <p class="text-slate-600 font-medium animate-pulse">AI is writing your copy...</p>
+            <p class="text-white font-medium animate-pulse text-lg">AI sedang menulis konten...</p>
+            <p class="text-slate-400 text-sm mt-2">Ini mungkin memakan waktu 30-60 detik</p>
           </div>
 
           <!-- The actual generated content -->
-          <div v-if="generatedPage" class="h-full overflow-y-auto" v-html="generatedPage.content_html"></div>
+          <div v-if="generatedPage && generatedPage.status === 'completed'" class="flex-1">
+            <iframe :srcdoc="generatedPage.content_html" class="w-full h-[600px] border-none bg-white"></iframe>
+          </div>
+          <div v-else-if="generatedPage && generatedPage.status === 'processing'" class="flex-1 flex flex-col items-center justify-center bg-slate-950 text-slate-400">
+            <div class="w-10 h-10 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin mb-4"></div>
+            <p>Wait a moment, AI is processing...</p>
+          </div>
         </div>
       </div>
     </div>
@@ -128,10 +148,46 @@ const form = reactive({
 const addFeature = () => form.features.push('')
 const removeFeature = (index) => form.features.splice(index, 1)
 
+const fillSampleData = () => {
+  form.product_name = 'Kopi Wonogiri Premium'
+  form.price = 'Rp 75.000 (Promo Beli 1 Gratis 1)'
+  form.product_description = 'Biji kopi pilihan yang diproses secara organik dari lereng pegunungan Wonogiri, menghasilkan cita rasa yang kuat namun lembut di lambung.'
+  form.features = ['High Caffeine', 'Organic Certified', 'Eco-friendly Packaging']
+  form.target_audience = 'Pekerja kantoran usia 25-40 yang sibuk dan pecinta kopi'
+  form.tone = 'Persuasif'
+  form.usp = 'Satu-satunya kopi dengan aroma melati alami dari pegunungan tanpa perasa buatan'
+}
+
+const pollStatus = async (id) => {
+  try {
+    const data = await $fetch(`${config.public.apiUrl}/sales-pages/${id}/status`, {
+      headers: {
+        Authorization: `Bearer ${token.value}`
+      }
+    })
+    
+    if (data.status === 'completed') {
+      generatedPage.value = data
+      generating.value = false
+    } else if (data.status === 'failed') {
+      alert('Generation failed: ' + data.error_message)
+      generating.value = false
+    } else {
+      // Still processing, poll again in 2 seconds
+      setTimeout(() => pollStatus(id), 2000)
+    }
+  } catch (e) {
+    console.error('Polling failed', e)
+    generating.value = false
+  }
+}
+
 const generateSalesPage = async () => {
   if (!token.value) return navigateTo('/login')
   
   generating.value = true
+  generatedPage.value = null
+  
   try {
     const data = await $fetch(`${config.public.apiUrl}/sales-pages`, {
       method: 'POST',
@@ -140,10 +196,11 @@ const generateSalesPage = async () => {
       },
       body: form
     })
-    generatedPage.value = data
+    
+    // Start polling
+    pollStatus(data.id)
   } catch (e) {
-    alert(e.data?.error || 'Failed to generate sales page.')
-  } finally {
+    alert(e.data?.error || 'Failed to start generation.')
     generating.value = false
   }
 }
@@ -152,6 +209,36 @@ const copyCode = () => {
   if (generatedPage.value) {
     navigator.clipboard.writeText(generatedPage.value.content_html)
     alert('HTML code copied to clipboard!')
+  }
+}
+
+const downloadHtml = () => {
+  if (generatedPage.value) {
+    const fullHtml = `<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${generatedPage.value.product_name}</title>
+    <script src="https://cdn.tailwindcss.com"></` + `script>
+    <style>
+        body { opacity: 0; transition: opacity 0.6s ease-in; }
+    </style>
+</head>
+<body class="bg-slate-950" onload="document.body.style.opacity='1'">
+    ${generatedPage.value.content_html}
+</body>
+</html>`;
+
+    const blob = new Blob([fullHtml], { type: 'text/html' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `sales-page-${generatedPage.value.product_name.replace(/\s+/g, '-').toLowerCase()}.html`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
   }
 }
 

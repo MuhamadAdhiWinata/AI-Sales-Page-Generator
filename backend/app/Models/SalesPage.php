@@ -9,12 +9,15 @@ class SalesPage extends Model
     protected $fillable = [
         'user_id',
         'product_name',
+        'slug',
         'product_description',
         'features',
         'target_audience',
         'price',
         'usp',
         'content_html',
+        'status',
+        'error_message',
     ];
 
     protected $casts = [

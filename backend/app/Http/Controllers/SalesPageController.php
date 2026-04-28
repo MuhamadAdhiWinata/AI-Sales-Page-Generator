@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\SalesPage;
-use Gemini\Laravel\Facades\Gemini;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -26,45 +25,46 @@ class SalesPageController extends Controller
             'tone' => 'required|string|in:Persuasif,Formal,Urgen',
         ]);
 
-        $featuresStr = implode(', ', $request->features);
+        $slug = \Illuminate\Support\Str::slug($request->product_name) . '-' . \Illuminate\Support\Str::random(5);
+
+        $salesPage = $request->user()->salesPages()->create([
+            'product_name' => $request->product_name,
+            'slug' => $slug,
+            'product_description' => $request->product_description,
+            'features' => $request->features,
+            'target_audience' => $request->target_audience,
+            'price' => $request->price,
+            'usp' => $request->usp,
+            'status' => 'processing',
+        ]);
+
+        \App\Jobs\GenerateSalesPageJob::dispatch($salesPage, $request->tone);
+
+        return response()->json($salesPage, 201);
+    }
+
+    public function status(SalesPage $salesPage)
+    {
+        return response()->json([
+            'status' => $salesPage->status,
+            'slug' => $salesPage->slug,
+            'content_html' => $salesPage->content_html,
+            'error_message' => $salesPage->error_message,
+        ]);
+    }
+
+    public function getBySlug($slug)
+    {
+        $salesPage = SalesPage::where('slug', $slug)->firstOrFail();
         
-        $prompt = "Generate a high-converting sales page in HTML format using Tailwind CSS classes.
-        Product Name: {$request->product_name}
-        Description: {$request->product_description}
-        Features: {$featuresStr}
-        Target Audience: {$request->target_audience}
-        Price: {$request->price}
-        Unique Selling Point: {$request->usp}
-        Tone: {$request->tone}
-        
-        Requirements:
-        1. Use only Tailwind CSS classes for styling.
-        2. Do not include <html>, <head>, or <body> tags. Just the inner content.
-        3. Make it visually appealing with sections like Hero, Features, Pricing, and CTA.
-        4. Use a {$request->tone} language style.
-        5. Return ONLY the HTML code.";
-
-        try {
-            $result = Gemini::generativeModel(model: 'gemini-1.5-flash')
-                ->generateContent($prompt);
-            
-            $contentHtml = $result->text();
-
-            $salesPage = $request->user()->salesPages()->create([
-                'product_name' => $request->product_name,
-                'product_description' => $request->product_description,
-                'features' => $request->features,
-                'target_audience' => $request->target_audience,
-                'price' => $request->price,
-                'usp' => $request->usp,
-                'content_html' => $contentHtml,
-            ]);
-
-            return response()->json($salesPage, 201);
-        } catch (\Exception $e) {
-            Log::error('Gemini API Error: ' . $e->getMessage());
-            return response()->json(['error' => 'Failed to generate content: ' . $e->getMessage()], 500);
+        if ($salesPage->status !== 'completed') {
+            return response()->json(['error' => 'Sales page is still processing.'], 404);
         }
+
+        return response()->json([
+            'product_name' => $salesPage->product_name,
+            'content_html' => $salesPage->content_html
+        ]);
     }
 
     public function show(Request $request, SalesPage $salesPage)

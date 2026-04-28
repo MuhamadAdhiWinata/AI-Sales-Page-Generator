@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aroma Coffee</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+    </style>
+</head>
+
+<body class="bg-[#0b0b0c] text-gray-200">
+
+    <!-- Navbar -->
+    <header
+        class="flex justify-between items-center px-10 py-6 border-b border-white/5 backdrop-blur fixed w-full z-50 bg-[#0b0b0c]/80">
+        <h1 class="title-font text-2xl tracking-wide">Aroma</h1>
+        <nav class="space-x-8 text-sm text-gray-400">
+            <a href="#home" class="hover:text-white transition">Home</a>
+            <a href="#menu" class="hover:text-white transition">Menu</a>
+            <a href="#about" class="hover:text-white transition">About</a>
+            <a href="#contact" class="hover:text-white transition">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center px-10 pt-24">
+        <div
+            class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1509042239860-f550ce710b93')] bg-cover bg-center opacity-20">
+        </div>
+        <div class="relative max-w-2xl">
+            <h2 class="title-font text-6xl leading-tight mb-6 text-white">
+                A Quiet Luxury
+                <br />
+                Coffee Experience
+            </h2>
+            <p class="text-gray-400 mb-10 text-lg">
+                Minimal, refined, and crafted with precision. A space designed for those who appreciate detail in every
+                cup.
+            </p>
+            <a href="#menu"
+                class="border border-white/20 px-8 py-3 rounded-full hover:bg-white hover:text-black transition inline-block">
+                View Menu
+            </a>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="about" class="px-10 py-28 grid md:grid-cols-3 gap-10">
+        <div class="bg-white/5 border border-white/5 backdrop-blur p-8 rounded-2xl">
+            <h3 class="title-font text-xl mb-3">Single Origin</h3>
+            <p class="text-gray-400 text-sm">Carefully sourced beans with distinct character and depth.</p>
+        </div>
+        <div class="bg-white/5 border border-white/5 backdrop-blur p-8 rounded-2xl">
+            <h3 class="title-font text-xl mb-3">Calm Atmosphere</h3>
+            <p class="text-gray-400 text-sm">A refined space built for focus, conversation, and presence.</p>
+        </div>
+        <div class="bg-white/5 border border-white/5 backdrop-blur p-8 rounded-2xl">
+            <h3 class="title-font text-xl mb-3">Precision Brew</h3>
+            <p class="text-gray-400 text-sm">Every cup measured, balanced, and consistently executed.</p>
+        </div>
+    </section>
+
+    <!-- Menu Preview -->
+    <section id="menu" class="px-10 py-28">
+        <h2 class="title-font text-4xl mb-14 text-white">Selected Menu</h2>
+        <div class="grid md:grid-cols-3 gap-10">
+            <div class="group">
+                <div
+                    class="h-60 bg-[url('https://images.unsplash.com/photo-1509042239860-f550ce710b93')] bg-cover bg-center rounded-xl mb-4">
+                </div>
+                <h3 class="text-lg">Espresso</h3>
+                <p class="text-gray-500 text-sm">Deep, bold, and structured.</p>
+            </div>
+            <div class="group">
+                <div
+                    class="h-60 bg-[url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085')] bg-cover bg-center rounded-xl mb-4">
+                </div>
+                <h3 class="text-lg">Flat White</h3>
+                <p class="text-gray-500 text-sm">Smooth texture with balanced intensity.</p>
+            </div>
+            <div class="group">
+                <div
+                    class="h-60 bg-[url('https://images.unsplash.com/photo-1461023058943-07fcbe16d735')] bg-cover bg-center rounded-xl mb-4">
+                </div>
+                <h3 class="text-lg">Cold Brew</h3>
+                <p class="text-gray-500 text-sm">Slow extraction, clean finish.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="contact" class="px-10 pb-28 text-center">
+        <h2 class="title-font text-4xl mb-6 text-white">Reserve Your Table</h2>
+        <p class="text-gray-400 mb-10">An experience worth slowing down for.</p>
+        <button class="border border-white/20 px-10 py-3 rounded-full hover:bg-white hover:text-black transition">
+            Book Now
+        </button>
+    </section>
+
+    <!-- Footer -->
+    <footer class="px-10 py-10 border-t border-white/5 text-sm text-gray-500 flex justify-between">
+        <p>© 2026 Aroma Coffee</p>
+        <p>Minimal • Refined • Timeless</p>
+    </footer>
+
+</body>
+
+</html>
