@@ -7,5 +7,11 @@ export default defineNuxtConfig({
     public: {
       apiUrl: process.env.API_URL || 'http://localhost:8000/api'
     }
+  },
+
+  vite: {
+    server: {
+      allowedHosts: 'all'
+    }
   }
 })
