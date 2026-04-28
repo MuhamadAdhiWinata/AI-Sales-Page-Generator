@@ -20,8 +20,12 @@
         </div>
       </div>
 
-      <div class="rounded-3xl border border-slate-800 bg-white overflow-hidden min-h-[800px]">
-        <div v-html="page.content_html"></div>
+      <div class="rounded-3xl border border-slate-800 bg-[#0b0b0c] overflow-hidden">
+        <iframe 
+          v-if="page" 
+          :srcdoc="page.content_html" 
+          class="w-full h-[800px] border-none shadow-2xl"
+        ></iframe>
       </div>
     </div>
   </div>
