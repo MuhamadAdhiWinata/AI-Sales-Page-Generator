@@ -5,13 +5,13 @@ export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss'],
   runtimeConfig: {
     public: {
-      apiUrl: process.env.API_URL || 'http://localhost:8000/api'
+      apiUrl: process.env.NUXT_PUBLIC_API_URL || 'http://localhost:8000/api'
     }
   },
 
-  vite: {
-    server: {
-      allowedHosts: 'all'
-    }
-  }
+  nitro: {
+    compressPublicAssets: true,
+  },
+
+  devtools: { enabled: false }
 })

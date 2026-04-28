@@ -1,23 +1,33 @@
 FROM node:20-slim
 
 WORKDIR /app
+# Stage 1: Build
+FROM node:20-alpine AS builder
 
-# Create app directory and set ownership
-RUN mkdir -p /app && chown -R node:node /app
-
-USER node
-
-# Copy package.json and package-lock.json
-COPY --chown=node:node package*.json ./
+WORKDIR /app
 
 # Install dependencies
+COPY package*.json ./
 RUN npm install
 
-# Copy the rest of the application
-COPY --chown=node:node . .
+# Copy source and build
+COPY . .
+RUN npm run build
 
-# Expose the port Nuxt runs on
+# Stage 2: Run
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy output from builder
+COPY --from=builder /app/.output ./.output
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV HOST=0.0.0.0
+ENV PORT=3000
+
 EXPOSE 3000
 
-# Start the application
-CMD ["npx", "nuxi", "dev", "--host", "0.0.0.0", "--port", "3000", "--allowed-hosts", "all"]
+# Start production server
+CMD ["node", ".output/server/index.mjs"]
