@@ -20,4 +20,4 @@ COPY --chown=node:node . .
 EXPOSE 3000
 
 # Start the application
-CMD ["npm", "run", "dev"]
+CMD ["npx", "nuxi", "dev", "--host", "0.0.0.0", "--port", "3000", "--allowed-hosts", "all"]
