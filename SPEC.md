@@ -48,6 +48,7 @@ Formulir di Nuxt 3 dirancang secara terstruktur untuk memberi konteks maksimal k
 - **Harga**
 - **Unique Selling Point (USP)**
 - **Pilihan Nada** (Persuasif, Formal, Urgen)
+- **Template Style** (Classic, Neon, Pastel)
 
 ### 4.3. Mesin AI & Pratinjau Langsung
 - **Prompt Engineering:** Laravel menyusun data formulir menjadi instruksi teknis ke Gemini API.
@@ -82,6 +83,7 @@ Formulir di Nuxt 3 dirancang secara terstruktur untuk memberi konteks maksimal k
 - `usp` (Text)
 - `content_html` (LongText) – *Menyimpan hasil render AI*
 - `status` (enum: `processing`, `completed`, `failed`)
+- `template` (String) - *Menyimpan pilihan template/style*
 - `error_message` (nullable Text)
 - `timestamps`
 
@@ -164,6 +166,7 @@ Formulir input di Nuxt 3 dirancang secara terstruktur untuk memberikan konteks m
 * **Price:** Informasi harga dan penawaran khusus.
 * **Unique Selling Point (USP):** Nilai jual unik yang membedakan dari kompetitor.
 * **Tone Selection:** Pilihan gaya bahasa (Persuasif, Formal, Urgen/Bergegas).
+* **Template Style:** Pilihan gaya layout (Classic, Neon, Pastel).
 
 ### 4.3. AI Engine & Live Preview
 * **Prompt Engineering:** Laravel menyusun data form menjadi instruksi teknis kepada Gemini API.
@@ -191,6 +194,7 @@ Formulir input di Nuxt 3 dirancang secara terstruktur untuk memberikan konteks m
 * `price` (String)
 * `usp` (Text)
 * `content_html` (LongText) - *Menyimpan hasil render AI*
+* `template` (String) - *Menyimpan pilihan template/style*
 * `timestamps`
 
 ---

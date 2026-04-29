@@ -17,6 +17,7 @@ class SalesPage extends Model
         'usp',
         'content_html',
         'status',
+        'template',
         'error_message',
     ];
 

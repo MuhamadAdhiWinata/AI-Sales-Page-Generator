@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Brew</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .title-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').slice(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body class="bg-black text-white overflow-x-hidden">
+
+    <!-- Navbar -->
+    <header
+        class="fixed w-full z-50 flex justify-between items-center px-10 py-6 bg-black/60 backdrop-blur border-b border-cyan-500/10">
+        <h1 class="title-font text-xl tracking-widest text-cyan-400">NEON BREW</h1>
+        <nav class="space-x-8 text-sm text-gray-400">
+            <a href="#home" class="hover:text-cyan-400 transition">Home</a>
+            <a href="#menu" class="hover:text-cyan-400 transition">Menu</a>
+            <a href="#vibe" class="hover:text-cyan-400 transition">Vibe</a>
+            <a href="#contact" class="hover:text-cyan-400 transition">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section id="home" class="min-h-screen flex items-center justify-center text-center relative">
+        <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10 blur-3xl">
+        </div>
+        <div class="relative z-10 max-w-3xl">
+            <h2 class="title-font text-6xl md:text-7xl mb-6">
+                FUTURE
+                <br />
+                COFFEE
+            </h2>
+            <p class="text-gray-400 mb-10 text-lg">
+                A bold, electric coffee experience. Where caffeine meets neon lights and midnight energy.
+            </p>
+            <a href="#menu"
+                class="px-8 py-3 border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition rounded-full">
+                Explore
+            </a>
+        </div>
+    </section>
+
+    <!-- Menu -->
+    <section id="menu" class="px-10 py-28">
+        <h2 class="title-font text-4xl mb-14 text-cyan-400">Signature Drinks</h2>
+        <div class="grid md:grid-cols-3 gap-10">
+            <div class="p-6 border border-cyan-500/20 rounded-xl hover:border-cyan-400 transition">
+                <h3 class="text-lg">Neon Latte</h3>
+                <p class="text-gray-500 text-sm">Bright, smooth, slightly sweet.</p>
+            </div>
+            <div class="p-6 border border-purple-500/20 rounded-xl hover:border-purple-400 transition">
+                <h3 class="text-lg">Cyber Espresso</h3>
+                <p class="text-gray-500 text-sm">Sharp, intense, futuristic kick.</p>
+            </div>
+            <div class="p-6 border border-pink-500/20 rounded-xl hover:border-pink-400 transition">
+                <h3 class="text-lg">Midnight Cold Brew</h3>
+                <p class="text-gray-500 text-sm">Dark, chilled, long-lasting energy.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vibe Section -->
+    <section id="vibe" class="px-10 py-28 text-center">
+        <h2 class="title-font text-4xl mb-6 text-white">Feel The Energy</h2>
+        <p class="text-gray-400 max-w-2xl mx-auto mb-10">
+            Lights, sound, atmosphere. Not just coffee — it's a late-night playground for thinkers, creators, and night
+            owls.
+        </p>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="h-48 bg-gradient-to-br from-cyan-500/20 to-transparent rounded-xl"></div>
+            <div class="h-48 bg-gradient-to-br from-purple-500/20 to-transparent rounded-xl"></div>
+            <div class="h-48 bg-gradient-to-br from-pink-500/20 to-transparent rounded-xl"></div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="contact" class="px-10 pb-28 text-center">
+        <h2 class="title-font text-4xl mb-6 text-cyan-400">Stay Awake With Us</h2>
+        <p class="text-gray-400 mb-10">Open till late. Always buzzing.</p>
+        <button
+            class="px-10 py-3 border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition rounded-full">
+            Visit Now
+        </button>
+    </section>
+
+    <!-- Footer -->
+    <footer class="px-10 py-10 border-t border-cyan-500/10 text-sm text-gray-500 flex justify-between">
+        <p>© 2026 Neon Brew</p>
+        <p>Electric • Bold • Alive</p>
+    </footer>
+
+</body>
+
+</html>

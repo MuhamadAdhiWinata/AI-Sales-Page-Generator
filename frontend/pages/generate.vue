@@ -64,9 +64,19 @@
               </div>
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-slate-400 mb-2">Unique Selling Point (USP)</label>
-              <input v-model="form.usp" type="text" required class="form-input" placeholder="What makes you different?" />
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-slate-400 mb-2">Unique Selling Point (USP)</label>
+                <input v-model="form.usp" type="text" required class="form-input" placeholder="What makes you different?" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-400 mb-2">Template Style</label>
+                <select v-model="form.template" class="form-input">
+                  <option value="classic">Classic</option>
+                  <option value="neon">Neon</option>
+                  <option value="pastel">Pastel</option>
+                </select>
+              </div>
             </div>
 
             <button 
@@ -111,7 +121,7 @@
 
           <div v-if="generating" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-slate-900/95 backdrop-blur-md">
             <div class="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mb-4"></div>
-            <p class="text-white font-medium animate-pulse text-lg">AI sedang menulis konten...</p>
+            <p class="text-white font-medium animate-pulse text-lg">AI sedang membuat konten...</p>
             <p class="text-slate-400 text-sm mt-2">Ini mungkin memakan waktu 30-60 detik</p>
           </div>
 
@@ -143,6 +153,7 @@ const form = reactive({
   features: [''],
   target_audience: '',
   tone: 'Persuasif',
+  template: 'classic',
   usp: ''
 })
 
@@ -156,6 +167,7 @@ const fillSampleData = () => {
   form.features = ['High Caffeine', 'Organic Certified', 'Eco-friendly Packaging']
   form.target_audience = 'Pekerja kantoran usia 25-40 yang sibuk dan pecinta kopi'
   form.tone = 'Persuasif'
+  form.template = 'classic'
   form.usp = 'Satu-satunya kopi dengan aroma melati alami dari pegunungan tanpa perasa buatan'
 }
 

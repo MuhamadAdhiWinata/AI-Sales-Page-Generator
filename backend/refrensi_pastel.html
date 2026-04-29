@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom Cafe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:wght@600&display=swap"
+        rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').slice(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body class="bg-[#faf7f5] text-[#2f2f2f]">
+
+    <!-- Navbar -->
+    <header
+        class="fixed w-full z-50 flex justify-between items-center px-10 py-5 bg-[#faf7f5]/95 backdrop-blur border-b border-[#e2d8d3]">
+        <h1 class="title-font text-xl text-[#b76e79]">Bloom</h1>
+        <nav class="space-x-8 text-sm font-medium text-[#3a3a3a]">
+            <a href="#home" class="hover:text-[#b76e79]">Home</a>
+            <a href="#menu" class="hover:text-[#b76e79]">Menu</a>
+            <a href="#about" class="hover:text-[#b76e79]">About</a>
+            <a href="#contact" class="hover:text-[#b76e79]">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section id="home" class="min-h-screen flex items-center px-10 pt-24">
+        <div class="grid md:grid-cols-2 gap-10 items-center">
+            <div>
+                <h2 class="title-font text-5xl leading-tight mb-6 text-[#2f2f2f]">
+                    Soft Moments,
+                    <br />
+                    Gentle Coffee
+                </h2>
+                <p class="mb-8 text-[#5f5f5f] text-lg leading-relaxed">
+                    A calm and cozy place wrapped in pastel tones. Clear, light, and thoughtfully designed for slow
+                    days.
+                </p>
+                <a href="#menu"
+                    class="px-8 py-3 bg-[#b76e79] text-white rounded-full shadow-md hover:scale-105 transition inline-block">
+                    View Menu
+                </a>
+            </div>
+            <div
+                class="h-[400px] rounded-3xl bg-[url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085')] bg-cover bg-center shadow-lg">
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu -->
+    <section id="menu" class="px-10 py-24 bg-[#f3ece9]">
+        <h2 class="title-font text-3xl mb-12 text-[#2f2f2f]">Our Favorites</h2>
+        <div class="grid md:grid-cols-3 gap-10">
+            <div class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition">
+                <h3 class="text-lg font-semibold mb-2 text-[#2f2f2f]">Rose Latte</h3>
+                <p class="text-sm text-[#5f5f5f]">Soft floral notes with creamy texture.</p>
+            </div>
+            <div class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition">
+                <h3 class="text-lg font-semibold mb-2 text-[#2f2f2f]">Vanilla Cloud</h3>
+                <p class="text-sm text-[#5f5f5f]">Light, sweet, and comforting.</p>
+            </div>
+            <div class="p-6 bg-white rounded-2xl shadow-md hover:shadow-lg transition">
+                <h3 class="text-lg font-semibold mb-2 text-[#2f2f2f]">Iced Matcha</h3>
+                <p class="text-sm text-[#5f5f5f]">Fresh and mellow with a smooth finish.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="px-10 py-24">
+        <div class="grid md:grid-cols-2 gap-10 items-center">
+            <div
+                class="h-[350px] rounded-3xl bg-[url('https://images.unsplash.com/photo-1509042239860-f550ce710b93')] bg-cover bg-center shadow-lg">
+            </div>
+            <div>
+                <h2 class="title-font text-3xl mb-6 text-[#2f2f2f]">Our Story</h2>
+                <p class="text-[#5f5f5f] leading-relaxed">
+                    Bloom was created as a quiet escape from the rush. Designed with clarity in mind — soft colors,
+                    clear layout, and space to breathe.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="contact" class="px-10 pb-24 text-center">
+        <h2 class="title-font text-3xl mb-4 text-[#2f2f2f]">Come & Relax</h2>
+        <p class="text-[#5f5f5f] mb-6">Take a break, breathe, and enjoy.</p>
+        <button class="px-8 py-3 bg-[#b76e79] text-white rounded-full shadow-md hover:scale-105 transition">
+            Visit Us
+        </button>
+    </section>
+
+    <!-- Footer -->
+    <footer class="px-10 py-10 border-t border-[#e2d8d3] text-sm flex justify-between text-[#5f5f5f]">
+        <p>© 2026 Bloom Cafe</p>
+        <p>Soft • Clear • Calm</p>
+    </footer>
+
+</body>
+
+</html>

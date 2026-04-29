@@ -16,6 +16,7 @@
    - **Harga**
    - **Unique Selling Point**
    - **Tone / Gaya Bahasa**
+   - **Template Style / Gaya Layout** (Classic, Neon, Pastel)
 3. Tekan tombol **Generate**.
 4. Sistem akan meng‑enqueue `GenerateSalesPageJob`. Selama proses, Anda akan melihat spinner dan status **Processing**.
 

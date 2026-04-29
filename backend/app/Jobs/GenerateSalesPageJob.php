@@ -31,7 +31,13 @@ class GenerateSalesPageJob implements ShouldQueue
     {
         $featuresStr = is_array($this->salesPage->features) ? implode(', ', $this->salesPage->features) : $this->salesPage->features;
 
-        $templatePath = base_path('refrensi.html');
+        $templateFile = 'refrensi.html';
+        if ($this->salesPage->template === 'neon') {
+            $templateFile = 'refrensi_neon.html';
+        } elseif ($this->salesPage->template === 'pastel') {
+            $templateFile = 'refrensi_pastel.html';
+        }
+        $templatePath = base_path($templateFile);
         if (!file_exists($templatePath)) {
             throw new \Exception("Template file not found at: " . $templatePath);
         }

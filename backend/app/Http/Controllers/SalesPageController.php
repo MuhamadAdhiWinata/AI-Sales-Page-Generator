@@ -23,6 +23,7 @@ class SalesPageController extends Controller
             'price' => 'required|string',
             'usp' => 'required|string',
             'tone' => 'required|string|in:Persuasif,Formal,Urgen',
+            'template' => 'required|string|in:classic,neon,pastel',
         ]);
 
         $slug = \Illuminate\Support\Str::slug($request->product_name) . '-' . \Illuminate\Support\Str::random(5);
@@ -36,6 +37,7 @@ class SalesPageController extends Controller
             'price' => $request->price,
             'usp' => $request->usp,
             'status' => 'processing',
+            'template' => $request->template,
         ]);
 
         \App\Jobs\GenerateSalesPageJob::dispatch($salesPage, $request->tone);

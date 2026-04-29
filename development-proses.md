@@ -30,15 +30,15 @@ Perjalanan dimulai dengan pertanyaan sederhana: *Bagaimana kita dapat memungkink
 
 ## 4️⃣ Building the Backend API
 - **Authentication** – Sanctum token routes (`register`, `login`, `me`, `logout`).
-- **Data model** – Migrasi `users` dan `sales_pages`. `sales_pages` menyimpan field produk serta `content_html` yang di‑generate AI.
+- **Data model** – Migrasi `users` dan `sales_pages` (termasuk kolom `template`). `sales_pages` menyimpan field produk, pilihan template, serta `content_html` yang di‑generate AI.
 - **Job system** – Dua job yang dijalankan di queue:
-  1. `GenerateSalesPageJob` – menerima data produk, membangun prompt, memanggil Gemini, menyimpan HTML.
+  1. `GenerateSalesPageJob` – menerima data produk, membaca file template referensi yang sesuai (`refrensi.html`, `refrensi_neon.html`, `refrensi_pastel.html`), membangun prompt, memanggil Gemini, menyimpan HTML.
   2. `RefineSalesPageJob` – menerima halaman yang sudah ada, instruksi pengguna, memanggil Gemini lagi, menimpa `content_html`.
 - **Controllers** – `SalesPageController` mengekspose CRUD serta endpoint `/refine`. Semua route berada dalam middleware `auth:sanctum` dan memeriksa `user_id` untuk otorisasi.
 - **Error handling & status** – Setiap job meng‑update kolom `status` (`processing`, `completed`, `failed`) dan `error_message`. Frontend melakukan polling ke `/status`.
 
 ## 5️⃣ Crafting the Frontend Experience
-- **Product input form** – Komponen Vue terstruktur untuk nama, deskripsi, fitur (array dinamis), audiens, harga, USP, dan pilihan tone. Validasi dilakukan dengan utilitas Nuxt.
+- **Product input form** – Komponen Vue terstruktur untuk nama, deskripsi, fitur (array dinamis), audiens, harga, USP, pilihan tone, dan pilihan template (Classic, Neon, Pastel). Validasi dilakukan dengan utilitas Nuxt.
 - **Live preview** – Hasil AI ditampilkan dalam `<iframe>` via `srcdoc`, sehingga CSS Tailwind yang di‑generate tidak bentrok dengan styling aplikasi.
 - **Floating “Edit with AI” panel** – Vue component yang muncul dari kanan, berisi textarea untuk instruksi refinemen dan tombol (atau `Ctrl+Enter`) yang meng‑POST ke `/sales-pages/{id}/refine`.
 - **Polling & refresh** – Composable kecil yang terus memanggil endpoint `/status` sampai job melaporkan `completed`, kemudian mengganti `srcdoc` iframe dengan HTML yang diperbarui.
