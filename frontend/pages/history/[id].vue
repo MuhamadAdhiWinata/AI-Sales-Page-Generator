@@ -9,7 +9,7 @@
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <NuxtLink to="/history" class="text-sm text-indigo-400 hover:underline flex items-center gap-1 mb-4">
-            ← Back to History
+            ← Back to All Pages
           </NuxtLink>
           <h1 class="text-3xl font-bold">{{ page.product_name }}</h1>
           <p class="text-slate-400">Generated on {{ new Date(page.created_at).toLocaleString() }}</p>

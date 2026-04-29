@@ -2,7 +2,7 @@
   <div class="container mx-auto px-4 py-12">
     <div class="flex items-center justify-between mb-12">
       <div>
-        <h1 class="text-3xl font-bold mb-2">Generation History</h1>
+        <h1 class="text-3xl font-bold mb-2">All Pages</h1>
         <p class="text-slate-400">View and manage your previously generated sales pages.</p>
       </div>
       <NuxtLink to="/generate" class="px-6 py-3 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-500 transition-all">
@@ -15,7 +15,7 @@
     </div>
 
     <div v-else-if="history.length === 0" class="text-center py-20 border border-dashed border-slate-800 rounded-3xl">
-      <p class="text-slate-500 mb-4">No history found yet.</p>
+      <p class="text-slate-500 mb-4">No pages found yet.</p>
       <NuxtLink to="/generate" class="text-indigo-400 font-bold hover:underline">Generate your first page</NuxtLink>
     </div>
 

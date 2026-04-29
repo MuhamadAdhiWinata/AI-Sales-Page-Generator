@@ -1,6 +1,6 @@
 export const useAuth = () => {
   const token = useCookie('auth_token')
-  const user = useState('user', () => null)
+  const user = useCookie<any | null>('auth_user', { default: () => null })
   const config = useRuntimeConfig()
 
   const setToken = (newToken: string) => {

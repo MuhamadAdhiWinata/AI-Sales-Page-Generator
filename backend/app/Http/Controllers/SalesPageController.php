@@ -47,12 +47,7 @@ class SalesPageController extends Controller
 
     public function status(SalesPage $salesPage)
     {
-        return response()->json([
-            'status' => $salesPage->status,
-            'slug' => $salesPage->slug,
-            'content_html' => $salesPage->content_html,
-            'error_message' => $salesPage->error_message,
-        ]);
+        return response()->json($salesPage);
     }
 
     public function getBySlug($slug)

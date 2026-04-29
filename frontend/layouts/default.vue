@@ -10,7 +10,7 @@
         <div class="flex items-center gap-6">
           <template v-if="user">
             <NuxtLink to="/generate" class="text-sm font-medium hover:text-indigo-400 transition-colors">Generate</NuxtLink>
-            <NuxtLink to="/history" class="text-sm font-medium hover:text-indigo-400 transition-colors">History</NuxtLink>
+            <NuxtLink to="/history" class="text-sm font-medium hover:text-indigo-400 transition-colors">All Pages</NuxtLink>
             <div class="h-4 w-px bg-slate-800"></div>
             <span class="text-sm text-slate-400">{{ user.name }}</span>
             <button @click="logout" class="text-sm font-medium text-rose-400 hover:text-rose-300 transition-colors">

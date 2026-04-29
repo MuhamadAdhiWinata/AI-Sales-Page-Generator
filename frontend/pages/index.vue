@@ -5,12 +5,18 @@
 
     <div class="container mx-auto px-4 text-center">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-xs font-semibold mb-8">
-        <span class="relative flex h-2 w-2">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
-        </span>
-        Powered by Gemini 1.5 Flash
-      </div>
+  <span class="relative flex h-2 w-2">
+    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+    <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+  </span>
+
+  Powered by
+ <span>
+  <a href="https://portofolio.adhinath.my.id/" class="text-indigo-400 hover:underline">
+    Muhamad Adhi Winata
+  </a>
+ </span>
+</div>
 
       <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-tight">
         Generate <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Persuasive Sales Pages</span> <br /> 

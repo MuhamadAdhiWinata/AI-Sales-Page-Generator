@@ -10,9 +10,14 @@
             </div>
             <h1 class="text-3xl font-bold">Generator</h1>
           </div>
-          <button @click="fillSampleData" type="button" class="text-xs px-3 py-1.5 rounded-lg border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 transition-all">
-            Isi Data Sampel
-          </button>
+          <div class="flex items-center gap-2">
+            <button @click="resetForm" type="button" class="text-xs px-3 py-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 transition-all">
+              Kosongkan Form
+            </button>
+            <button @click="fillSampleData" type="button" class="text-xs px-3 py-1.5 rounded-lg border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 transition-all">
+              Isi Data Sampel
+            </button>
+          </div>
         </div>
 
         <div class="p-8 rounded-2xl border border-slate-800 bg-slate-900/50">
@@ -101,6 +106,9 @@
         <div class="flex items-center justify-between h-10 mb-8">
           <h2 class="text-xl font-bold">Live Preview</h2>
           <div v-if="generatedPage && generatedPage.status === 'completed'" class="flex gap-2">
+             <NuxtLink :to="`/history/${generatedPage.id}`" class="text-xs px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-bold hover:bg-indigo-500 transition-all flex items-center gap-1">
+               <span>✨</span> Edit with AI
+             </NuxtLink>
              <button @click="downloadHtml" class="text-xs px-3 py-1.5 rounded-lg border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 transition-all flex items-center gap-1">
                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                Download
@@ -146,7 +154,7 @@ const toast = useToast()
 const generating = ref(false)
 const generatedPage = ref(null)
 
-const form = reactive({
+const defaultForm = {
   product_name: '',
   price: '',
   product_description: '',
@@ -155,7 +163,51 @@ const form = reactive({
   tone: 'Persuasif',
   template: 'classic',
   usp: ''
+}
+
+const form = reactive({ ...defaultForm })
+
+onMounted(() => {
+  if (process.client) {
+    const saved = localStorage.getItem('ai_sales_generator_form')
+    if (saved) {
+      try {
+        Object.assign(form, JSON.parse(saved))
+      } catch (e) {}
+    }
+    const savedPage = localStorage.getItem('ai_sales_generator_page')
+    if (savedPage) {
+      try {
+        generatedPage.value = JSON.parse(savedPage)
+      } catch (e) {}
+    }
+  }
 })
+
+watch(form, (newVal) => {
+  if (process.client) {
+    localStorage.setItem('ai_sales_generator_form', JSON.stringify(newVal))
+  }
+}, { deep: true })
+
+watch(generatedPage, (newVal) => {
+  if (process.client) {
+    if (newVal) {
+      localStorage.setItem('ai_sales_generator_page', JSON.stringify(newVal))
+    } else {
+      localStorage.removeItem('ai_sales_generator_page')
+    }
+  }
+}, { deep: true })
+
+const resetForm = () => {
+  Object.assign(form, JSON.parse(JSON.stringify(defaultForm)))
+  generatedPage.value = null
+  if (process.client) {
+    localStorage.removeItem('ai_sales_generator_form')
+    localStorage.removeItem('ai_sales_generator_page')
+  }
+}
 
 const addFeature = () => form.features.push('')
 const removeFeature = (index) => form.features.splice(index, 1)
