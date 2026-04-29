@@ -96,6 +96,7 @@
 const route = useRoute()
 const { token } = useAuth()
 const config = useRuntimeConfig()
+const toast = useToast()
 const page = ref(null)
 const loading = ref(true)
 const refining = ref(false)
@@ -109,7 +110,7 @@ const fetchPage = async () => {
     })
     page.value = data
   } catch (e) {
-    alert('Failed to fetch page details.')
+    toast.error('Failed to fetch page details.')
     navigateTo('/history')
   } finally {
     loading.value = false
@@ -131,7 +132,7 @@ const startRefinement = async () => {
     pollStatus()
   } catch (e) {
     console.error('Refinement failed', e)
-    alert('Failed to start AI refinement.')
+    toast.error('Failed to start AI refinement.')
     refining.value = false
   }
 }
@@ -151,7 +152,7 @@ const pollStatus = async () => {
       } else if (data.status === 'failed') {
         clearInterval(pollInterval)
         refining.value = false
-        alert('AI Refinement failed: ' + (data.error_message || 'Unknown error'))
+        toast.error('AI Refinement failed: ' + (data.error_message || 'Unknown error'))
       }
     } catch (e) {
       console.error('Polling failed', e)
@@ -164,7 +165,7 @@ const pollStatus = async () => {
 const copyCode = () => {
   if (page.value) {
     navigator.clipboard.writeText(page.value.content_html)
-    alert('HTML code copied to clipboard!')
+    toast.success('HTML code copied to clipboard!')
   }
 }
 

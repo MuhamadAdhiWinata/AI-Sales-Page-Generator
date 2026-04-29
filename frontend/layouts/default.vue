@@ -31,6 +31,9 @@
     <main>
       <slot />
     </main>
+    
+    <AppConfirm />
+    <AppToast />
   </div>
 </template>
 

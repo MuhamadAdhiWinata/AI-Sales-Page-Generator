@@ -132,6 +132,7 @@
 <script setup>
 const { token } = useAuth()
 const config = useRuntimeConfig()
+const toast = useToast()
 const generating = ref(false)
 const generatedPage = ref(null)
 
@@ -170,7 +171,7 @@ const pollStatus = async (id) => {
       generatedPage.value = data
       generating.value = false
     } else if (data.status === 'failed') {
-      alert('Generation failed: ' + data.error_message)
+      toast.error('Generation failed: ' + data.error_message)
       generating.value = false
     } else {
       // Still processing, poll again in 2 seconds
@@ -200,7 +201,7 @@ const generateSalesPage = async () => {
     // Start polling
     pollStatus(data.id)
   } catch (e) {
-    alert(e.data?.error || 'Failed to start generation.')
+    toast.error(e.data?.error || 'Failed to start generation.')
     generating.value = false
   }
 }
@@ -208,7 +209,7 @@ const generateSalesPage = async () => {
 const copyCode = () => {
   if (generatedPage.value) {
     navigator.clipboard.writeText(generatedPage.value.content_html)
-    alert('HTML code copied to clipboard!')
+    toast.success('HTML code copied to clipboard!')
   }
 }
 

@@ -13,5 +13,13 @@ export default defineNuxtConfig({
     compressPublicAssets: true,
   },
 
+  app: {
+    head: {
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico?v=' + Date.now() }
+      ]
+    }
+  },
+
   devtools: { enabled: false }
 })

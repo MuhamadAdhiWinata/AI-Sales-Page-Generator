@@ -65,6 +65,8 @@
 <script setup>
 const { token } = useAuth()
 const config = useRuntimeConfig()
+const toast = useToast()
+const confirmDialog = useConfirm()
 const history = ref([])
 const loading = ref(true)
 
@@ -84,7 +86,13 @@ const fetchHistory = async () => {
 }
 
 const deletePage = async (id) => {
-  if (!confirm('Are you sure you want to delete this page?')) return
+  const isConfirmed = await confirmDialog.requireConfirm({
+    title: 'Hapus Halaman',
+    message: 'Are you sure you want to delete this page? Tindakan ini tidak dapat dibatalkan.',
+    confirmText: 'Ya, Hapus',
+    type: 'danger'
+  })
+  if (!isConfirmed) return
   
   try {
     await $fetch(`${config.public.apiUrl}/sales-pages/${id}`, {
@@ -94,8 +102,9 @@ const deletePage = async (id) => {
       }
     })
     history.value = history.value.filter(p => p.id !== id)
+    toast.success('Page deleted successfully')
   } catch (e) {
-    alert('Failed to delete page.')
+    toast.error('Failed to delete page.')
   }
 }
 
@@ -129,7 +138,7 @@ const downloadHtml = (page) => {
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
   } else {
-    alert('Content is not ready yet.')
+    toast.warning('Content is not ready yet.')
   }
 }
 
