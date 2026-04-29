@@ -20,7 +20,7 @@
           </div>
         </div>
 
-        <div class="p-8 rounded-2xl border border-slate-800 bg-slate-900/50">
+        <div id="product-form" class="p-8 rounded-2xl border border-slate-800 bg-slate-900/50">
           <form @submit.prevent="generateSalesPage" class="space-y-6">
             <!-- Product Info -->
             <div class="grid md:grid-cols-2 gap-6">
@@ -74,7 +74,7 @@
                 <label class="block text-sm font-medium text-slate-400 mb-2">Unique Selling Point (USP)</label>
                 <input v-model="form.usp" type="text" required class="form-input" placeholder="What makes you different?" />
               </div>
-              <div>
+              <div id="template-selector">
                 <label class="block text-sm font-medium text-slate-400 mb-2">Template Style</label>
                 <select v-model="form.template" class="form-input">
                   <option value="classic">Classic</option>
@@ -85,6 +85,7 @@
             </div>
 
             <button 
+              id="generate-btn"
               :disabled="generating"
               type="submit" 
               class="w-full py-4 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-500 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
@@ -106,7 +107,7 @@
         <div class="flex items-center justify-between h-10 mb-8">
           <h2 class="text-xl font-bold">Live Preview</h2>
           <div v-if="generatedPage && generatedPage.status === 'completed'" class="flex gap-2">
-             <NuxtLink :to="`/history/${generatedPage.id}`" class="text-xs px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-bold hover:bg-indigo-500 transition-all flex items-center gap-1">
+             <NuxtLink id="edit-ai-panel" :to="`/history/${generatedPage.id}`" class="text-xs px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-bold hover:bg-indigo-500 transition-all flex items-center gap-1">
                <span>✨</span> Edit with AI
              </NuxtLink>
              <button @click="downloadHtml" class="text-xs px-3 py-1.5 rounded-lg border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 transition-all flex items-center gap-1">
@@ -121,7 +122,7 @@
           </div>
         </div>
 
-        <div class="preview-container relative min-h-[600px] max-h-[800px] rounded-2xl border border-slate-800 bg-slate-950 overflow-hidden flex flex-col">
+        <div id="preview-iframe" class="preview-container relative min-h-[600px] max-h-[800px] rounded-2xl border border-slate-800 bg-slate-950 overflow-hidden flex flex-col">
           <div v-if="!generatedPage && !generating" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 p-8 text-center">
             <svg class="w-16 h-16 mb-4 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
             <p>Fill out the form and click generate to see your sales page here.</p>
@@ -167,8 +168,23 @@ const defaultForm = {
 
 const form = reactive({ ...defaultForm })
 
+const { startMainTour } = useTour()
+const route = useRoute()
+
 onMounted(() => {
   if (process.client) {
+    // Check if tour should start
+    if (route.query.startTour === 'true') {
+      // Remove query param without refresh
+      const url = new URL(window.location.href)
+      url.searchParams.delete('startTour')
+      window.history.replaceState({}, '', url)
+      
+      setTimeout(() => {
+        startMainTour()
+      }, 500)
+    }
+
     const saved = localStorage.getItem('ai_sales_generator_form')
     if (saved) {
       try {
