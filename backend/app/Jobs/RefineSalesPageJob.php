@@ -52,22 +52,27 @@ class RefineSalesPageJob implements ShouldQueue
         6. Preserve the <script> for smooth scrolling and all Google Fonts links.";
 
         try {
+            $model = env('GEMINI_MODEL', 'gemini-flash-latest');
+            $url = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent";
+
             $response = Http::timeout(120)->withHeaders([
-                'Authorization' => 'Bearer ' . env('OPENROUTER_API_KEY'),
-                'HTTP-Referer' => env('APP_URL'),
-                'X-Title' => 'AI Sales Page Refiner',
-            ])->post('https://openrouter.ai/api/v1/chat/completions', [
-                'model' => env('OPENROUTER_MODEL', 'openrouter/free'),
-                'messages' => [
-                    ['role' => 'user', 'content' => $prompt]
-                ],
+                'X-goog-api-key' => env('GEMINI_API_KEY'),
+                'Content-Type' => 'application/json',
+            ])->post($url, [
+                'contents' => [
+                    [
+                        'parts' => [
+                            ['text' => $prompt]
+                        ]
+                    ]
+                ]
             ]);
 
             if ($response->failed()) {
-                throw new \Exception('OpenRouter API request failed: ' . $response->body());
+                throw new \Exception('Gemini API request failed: ' . $response->body());
             }
 
-            $contentHtml = $response->json('choices.0.message.content');
+            $contentHtml = $response->json('candidates.0.content.parts.0.text');
             
             // Clean AI chatter
             $contentHtml = preg_replace('/^```html\s+/i', '', $contentHtml);

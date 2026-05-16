@@ -65,23 +65,27 @@ class GenerateSalesPageJob implements ShouldQueue
         {$template}";
 
         try {
+            $model = env('GEMINI_MODEL', 'gemini-flash-latest');
+            $url = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent";
+            
             $response = Http::timeout(120)->withHeaders([
-                'Authorization' => 'Bearer ' . env('OPENROUTER_API_KEY'),
-                'HTTP-Referer' => env('APP_URL'),
-                'X-Title' => 'AI Sales Page Generator',
-            ])->post('https://openrouter.ai/api/v1/chat/completions', [
-                'model' => env('OPENROUTER_MODEL', 'openrouter/free'),
-                'messages' => [
-                    ['role' => 'user', 'content' => $prompt]
-                ],
-                'max_tokens' => 4000,
+                'X-goog-api-key' => env('GEMINI_API_KEY'),
+                'Content-Type' => 'application/json',
+            ])->post($url, [
+                'contents' => [
+                    [
+                        'parts' => [
+                            ['text' => $prompt]
+                        ]
+                    ]
+                ]
             ]);
 
             if ($response->failed()) {
                 throw new \Exception($response->body());
             }
 
-            $contentHtml = $response->json('choices.0.message.content');
+            $contentHtml = $response->json('candidates.0.content.parts.0.text');
             
             // Aggressively strip markdown code blocks and conversational text
             $contentHtml = preg_replace('/^```html\s+/i', '', $contentHtml);

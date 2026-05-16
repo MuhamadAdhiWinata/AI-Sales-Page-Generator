@@ -1,4 +1,23 @@
 services:
+  db:
+    image: mysql:8.0
+    container_name: ai-sales-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: sales_page_db
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: root
+      MYSQL_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   backend:
     build:
       context: ./backend
@@ -11,6 +30,10 @@ services:
       - ./backend:/var/www
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    command: sh -c "php artisan migrate --force && php-fpm"
+    depends_on:
+      db:
+        condition: service_healthy
 
   nginx-backend:
     image: nginx:stable-alpine
@@ -38,7 +61,8 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
-      - backend
+      db:
+        condition: service_healthy
 
   frontend:
     build:
